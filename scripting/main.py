@@ -5,8 +5,8 @@
 
 
 def print_value(name):
-    val = input("Enter your value: ")
-    print(val)
+    username = input("Enter username:")
+    print("Username is: " + username)
 
 
 if __name__ == '__main__':
