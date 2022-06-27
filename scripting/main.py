@@ -15,7 +15,7 @@ def print_value(name):
 
     list_bin = []
     for i in list_ASCII:
-        list_bin.append(bin(int(i))[2:])
+        list_bin.append(bin(int(i))[2:].zfill(8))
     print(list_bin)
 
 if __name__ == '__main__':
