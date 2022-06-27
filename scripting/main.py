@@ -5,9 +5,8 @@
 
 
 def print_value(name):
-    username = input("Enter username:")
-    print("Username is: " + username)
-
+    test_str = input("Entrer une valeur:")
+    print(list(test_str))
 
 if __name__ == '__main__':
     print_value('PyCharm')
