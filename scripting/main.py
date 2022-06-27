@@ -37,6 +37,13 @@ def print_value(name):
     list_bin_formatted = [character_bin[i:i + n] for i in range(0, len(character_bin), n)]
     print(list_bin_formatted)
 
+    # list with 6 digits on the last element
+    lastElement = list_bin_formatted[-1].ljust(6, "0")
+    list_bin_formatted[-1] = lastElement
+    print(list_bin_formatted)
+
+
+
 
 if __name__ == '__main__':
     print_value('PyCharm')
