@@ -48,10 +48,20 @@ def lastElement(list_bin_formatted):
     return list_bin_formatted
 
 
+def list_dec(list_bin_formatted):
+    # binary list to integer conversion
+    list_dec = []
+    for i in list_bin_formatted:
+        list_dec.append(int(str(i), 2))
+    print(list_dec)
+    return list_dec
+
+
 if __name__ == '__main__':
     base_string = base_string()
     list_ASCII = list_ascii(base_string)
     list_bin = list_bin(list_ASCII)
     character_bin = character_bin(list_bin)
     list_bin_formatted = list_bin_formatted(character_bin)
-    lastElement(list_bin_formatted)
+    list_bin_formatted = lastElement(list_bin_formatted)
+    list_dec(list_bin_formatted)
