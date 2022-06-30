@@ -6,7 +6,7 @@ logging.basicConfig(level=logging.INFO)
 logging.info('This will be logged')
 
 base_string = argparse.ArgumentParser()
-base_string.add_argument("string", help="string to test",type=str)
+base_string.add_argument("string", help="string to test", type=str)
 base_string = base_string.parse_args()
 print("The string is : " + base_string.string)
 
