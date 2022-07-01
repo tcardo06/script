@@ -18,3 +18,6 @@ Getting Started:
 
 Trello link:
 https://trello.com/b/6QMdi7Dn/scripting-admin
+
+![alt text](file:///Users/thomascardoso/Desktop/Capture%20d%E2%80%99e%CC%81cran%202022-07-01%20a%CC%80%2014.13.20.png)
+![alt text](file:///Users/thomascardoso/Desktop/Capture%20d%E2%80%99e%CC%81cran%202022-07-01%20a%CC%80%2014.12.53.png)
