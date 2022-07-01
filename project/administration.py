@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from sys import argv
 
-#import temperature
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 import time
@@ -12,6 +11,7 @@ import influxdb_client
 
 bucket = "coding"
 org = "coding"
+# token to change depending on the user
 token = "1PSoQMREDKmqmOmeCcTgRPnG2BFmnO003YtGyXLV4bZfAfkKHhLlqnBqqcBNnu_62uDi09bec8bp6i4ZLPNRyw=="
 # Store the URL of your InfluxDB instance
 url = "http://localhost:8086/"
@@ -24,25 +24,10 @@ client = influxdb_client.InfluxDBClient(
 
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
-# p = influxdb_client.Point("my_measurement").tag("location", "Prague")
-# write_api.write(bucket=bucket, org=org, record=p)
-
-# query_api = client.query_api()
-# query = ' from(bucket:"coding")\
-# |> range(start: -10m)\
-# |> filter(fn:(r) => r._measurement == "my_measurement")\
-# |> filter(fn: (r) => r.location == "Prague")'
-# result = query_api.query(org=org, query=query)
-# results = []
-# for table in result:
-#   for record in table.records:
-#     results.append((record.get_field(), record.get_value()))
-
-# print(results)
-
 NAME = argv[0]
 
 
+# function that get the metrics
 def system_info_all():
     info = {
         # CPU
@@ -69,15 +54,15 @@ def system_info_all():
         "Disk free": f"{psutil.disk_usage('/').free / (1024 ** 3):,.3f} GiB%",
         "Disk counters": f"{psutil.net_io_counters()}",
 
-        # Others
-        #"Uptime": timedelta(seconds=time() - psutil.boot_time()),
     }
 
-    p = influxdb_client.Point("cpu_usage").tag("emetteur", "localhost").field("utilisation", psutil.cpu_percent(interval=.1))
-    write_api.write(bucket=bucket, org=org, record=p)
+    cpu_usage = influxdb_client.Point("cpu_usage").tag("emetteur", "localhost").field("utilisation", psutil.cpu_percent(interval=.1))
+    disk_usage = influxdb_client.Point("disk_usage").tag("emetteur", "localhost").field("utilisation", psutil.disk_usage('/').percent)
+    memory_usage = influxdb_client.Point("memory_usage").tag("emetteur", "localhost").field("utilisation", psutil.virtual_memory().percent)
+    write_api.write(bucket=bucket, org=org, record=cpu_usage)
+    write_api.write(bucket=bucket, org=org, record=disk_usage)
+    write_api.write(bucket=bucket, org=org, record=memory_usage)
 
-    # print("\n\n SYSTEM INFO ALL\n\n" + "\n".join([f"{key}: {value}" for key, value in info.items()]))
-    print(f"point envoyé: {p}")
 
 def system_info_cpu():
     info_cpu = {
@@ -127,13 +112,6 @@ def system_info_disk():
     print("\n\n SYSTEM INFO DISK\n\n" + "\n".join([f"{key}: {value}" for key, value in info.items()]))
 
 
-# system_info_all()
-# system_info_cpu()
-# system_info_memory()
-# system_info_networks()
-# system_info_disk()
-
-
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--interval", help="echo the interval", type=int)
 args = parser.parse_args()
@@ -141,9 +119,4 @@ args = parser.parse_args()
 while True:
     time.sleep(args.interval)
     system_info_all()
-    # system_info_cpu()
-    # system_info_memory()
-    # system_info_networks()
-    # system_info_disk()
-    # print(args.interval)
 
