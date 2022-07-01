@@ -19,5 +19,10 @@ Getting Started:
 Trello link:
 https://trello.com/b/6QMdi7Dn/scripting-admin
 
-![alt text](file:///Users/thomascardoso/Desktop/Capture%20d%E2%80%99e%CC%81cran%202022-07-01%20a%CC%80%2014.13.20.png)
-![alt text](file:///Users/thomascardoso/Desktop/Capture%20d%E2%80%99e%CC%81cran%202022-07-01%20a%CC%80%2014.12.53.png)
+Grafana screenshot:
+
+<img width="1717" alt="Capture d’écran 2022-07-01 à 14 12 53" src="https://user-images.githubusercontent.com/72390135/176893235-cde12e1a-07b1-4481-ab50-edfeeb9a0b4b.png">
+
+InfluxDB screenshot:
+
+<img width="1717" alt="Capture d’écran 2022-07-01 à 14 13 20" src="https://user-images.githubusercontent.com/72390135/176893255-0406eea2-83e3-418c-814c-ff005dc83f1c.png">
