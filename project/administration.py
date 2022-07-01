@@ -12,7 +12,7 @@ import influxdb_client
 
 bucket = "coding"
 org = "coding"
-token = "pfgjQDVdiB0Iu6u7y2FaIbMSf6jpwRO7cP4de8wgbj0ED8Q3ejGFtmTNvLd7s2KY9E5oGVb9hJju9muSXF-EHg=="
+token = "1PSoQMREDKmqmOmeCcTgRPnG2BFmnO003YtGyXLV4bZfAfkKHhLlqnBqqcBNnu_62uDi09bec8bp6i4ZLPNRyw=="
 # Store the URL of your InfluxDB instance
 url = "http://localhost:8086/"
 
@@ -24,21 +24,21 @@ client = influxdb_client.InfluxDBClient(
 
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
-p = influxdb_client.Point("my_measurement").tag("location", "Prague")
-write_api.write(bucket=bucket, org=org, record=p)
+# p = influxdb_client.Point("my_measurement").tag("location", "Prague")
+# write_api.write(bucket=bucket, org=org, record=p)
 
-query_api = client.query_api()
-query = ' from(bucket:"coding")\
-|> range(start: -10m)\
-|> filter(fn:(r) => r._measurement == "my_measurement")\
-|> filter(fn: (r) => r.location == "Prague")'
-result = query_api.query(org=org, query=query)
-results = []
-for table in result:
-  for record in table.records:
-    results.append((record.get_field(), record.get_value()))
+# query_api = client.query_api()
+# query = ' from(bucket:"coding")\
+# |> range(start: -10m)\
+# |> filter(fn:(r) => r._measurement == "my_measurement")\
+# |> filter(fn: (r) => r.location == "Prague")'
+# result = query_api.query(org=org, query=query)
+# results = []
+# for table in result:
+#   for record in table.records:
+#     results.append((record.get_field(), record.get_value()))
 
-print(results)
+# print(results)
 
 NAME = argv[0]
 
@@ -72,8 +72,12 @@ def system_info_all():
         # Others
         #"Uptime": timedelta(seconds=time() - psutil.boot_time()),
     }
-    print("\n\n SYSTEM INFO ALL\n\n" + "\n".join([f"{key}: {value}" for key, value in info.items()]))
 
+    p = influxdb_client.Point("cpu_usage").tag("emetteur", "localhost").field("utilisation", psutil.cpu_percent(interval=.1))
+    write_api.write(bucket=bucket, org=org, record=p)
+
+    # print("\n\n SYSTEM INFO ALL\n\n" + "\n".join([f"{key}: {value}" for key, value in info.items()]))
+    print(f"point envoyé: {p}")
 
 def system_info_cpu():
     info_cpu = {
@@ -123,11 +127,11 @@ def system_info_disk():
     print("\n\n SYSTEM INFO DISK\n\n" + "\n".join([f"{key}: {value}" for key, value in info.items()]))
 
 
-system_info_all()
-system_info_cpu()
-system_info_memory()
-system_info_networks()
-system_info_disk()
+# system_info_all()
+# system_info_cpu()
+# system_info_memory()
+# system_info_networks()
+# system_info_disk()
 
 
 parser = argparse.ArgumentParser()
@@ -137,9 +141,9 @@ args = parser.parse_args()
 while True:
     time.sleep(args.interval)
     system_info_all()
-    system_info_cpu()
-    system_info_memory()
-    system_info_networks()
-    system_info_disk()
-    print(args.interval)
+    # system_info_cpu()
+    # system_info_memory()
+    # system_info_networks()
+    # system_info_disk()
+    # print(args.interval)
 
