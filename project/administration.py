@@ -1,17 +1,44 @@
 from datetime import datetime, timedelta
 from sys import argv
 
+#import temperature
+from influxdb_client.client.write_api import SYNCHRONOUS
+
 import time
 import argparse
-import logging
-
 import psutil
+import influxdb_client
 
 
-#logging.basicConfig(level=logging.INFO)
-#logging.info('This will be logged')
+bucket = "coding"
+org = "coding"
+token = "pfgjQDVdiB0Iu6u7y2FaIbMSf6jpwRO7cP4de8wgbj0ED8Q3ejGFtmTNvLd7s2KY9E5oGVb9hJju9muSXF-EHg=="
+# Store the URL of your InfluxDB instance
+url = "http://localhost:8086/"
 
+client = influxdb_client.InfluxDBClient(
+   url=url,
+   token=token,
+   org=org
+)
 
+write_api = client.write_api(write_options=SYNCHRONOUS)
+
+p = influxdb_client.Point("my_measurement").tag("location", "Prague")
+write_api.write(bucket=bucket, org=org, record=p)
+
+query_api = client.query_api()
+query = ' from(bucket:"coding")\
+|> range(start: -10m)\
+|> filter(fn:(r) => r._measurement == "my_measurement")\
+|> filter(fn: (r) => r.location == "Prague")'
+result = query_api.query(org=org, query=query)
+results = []
+for table in result:
+  for record in table.records:
+    results.append((record.get_field(), record.get_value()))
+
+print(results)
 
 NAME = argv[0]
 
